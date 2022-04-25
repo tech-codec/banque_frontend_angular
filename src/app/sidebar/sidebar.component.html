@@ -1,0 +1,78 @@
+<div class="sidebar" data-color="red" data-image="">
+  <!--- sidebar -->
+  <div class="sidebar-wrapper">
+    <div class="logo">
+      <a href="http://www.creative-tim.com" class="simple-text">
+        <div class="logo-img">
+          <img src="/assets/img/angular2-logo-white.png"/>
+        </div>
+        <p></p>
+        <p></p>
+        Creative Tim
+      </a>
+    </div>
+    <ul class="nav responsive-nav">
+      <li *ngIf="isMobileMenu()">
+        <a class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-dashboard"></i>
+          <p class="hidden-lg hidden-md">Dashboard</p>
+        </a>
+      </li>
+      <li *ngIf="isMobileMenu()">
+        <a>
+          <i class="fa fa-search"></i>
+          <p class="hidden-lg hidden-md">Search</p>
+        </a>
+      </li>
+      <li *ngIf="isMobileMenu()">
+        <a href="">
+          <p>Account</p>
+        </a>
+      </li>
+      <li *ngIf="isMobileMenu()">
+        <a>
+          <p>Log out</p>
+        </a>
+      </li>
+      <li class="separator hidden-lg hidden-md" *ngIf="isMobileMenu()"></li>
+      <li  [ngClass]="code== 1? 'active': ''"  class="clickable">
+        <a>
+          <i class="fa fa-address-book"></i>
+          <p>Villes</p>
+        </a>
+      </li>
+      <li class="clickable">
+        <a routerLink="operation-admin">
+          <i class="fa fa-address-book"></i>
+          <p>Opérations</p>
+        </a>
+      </li>
+      <li class="clickable" >
+        <a routerLink="compte-admin">
+          <i class="fa fa-address-book"></i>
+          <p>Compte Admin</p>
+        </a>
+      </li>
+      <li class="clickable">
+        <a routerLink="compte-admin">
+          <i class="fa fa-address-book"></i>
+          <p>Comptes</p>
+        </a>
+      </li>
+      <li class="clickable">
+        <a routerLink="client-admin">
+          <i class="fa fa-address-book"></i>
+          <p>Clients</p>
+        </a>
+      </li>
+      <li>
+        <a>
+          <i class="fa fa-check"></i>
+          <p> pro x </p>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- sidebar -->
+  <div class="sidebar-background" style="background-image: url(assets/img/sidebar-5.jpg"></div>
+</div>

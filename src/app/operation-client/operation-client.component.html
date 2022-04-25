@@ -1,0 +1,141 @@
+<div class="container col-md-12">
+  <div class="row col-md-12 p-3">
+    <div class="col col-md-6">
+      <div class="card">
+        <div class="card-header bg-success">Consulté Compte</div>
+        <div class="card-body">
+          <div class="alert alert-danger" *ngIf="compte==null">
+            <strong>Bad credentials!</strong> ce compte n'existe pas.
+          </div>
+          <form #f="ngForm" (ngSubmit)="consultcmpte(f.value)">
+            <div class="form-group row">
+              <label for="codeCompte" class="col-sm-3 col-form-label">Code Compte:</label>
+              <div class="col-sm-5">
+                <input  class="form-control" ngModel id="codeCompte" placeholder="entrer votre code" name="codecp">
+              </div>
+              <button class="btn btn-primary" type="submit">Consulter</button>
+            </div>
+            <div class="text-danger">
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-md-6" *ngIf="compte!=null && compte!=1">
+      <div class="card">
+        <div class="card-header bg-success">effectué une opération</div>
+        <div class="card-body m-3">
+          <div class="alert alert-success" *ngIf="opsuccess==1">
+            <strong>Operation!</strong> effectuée avec succes.
+          </div>
+          <form #f="ngForm" (ngSubmit)="operation(f.value)">
+            <div>
+
+              <label>Code compte:</label>
+              {{codecp}}
+              <input name="codeCp" ngModel value="{{codecp}}" [(ngModel)]="codecp" hidden>
+              <label></label>
+            </div>
+            <div >
+              <input type="radio" ngModel="" name="typeOp" value="ver" checked="checked" onchange="document.getElementById('coderecepteur').style.display='none'">
+              <label>Verser</label>
+              <input type="radio" ngModel name="typeOp" value="ret" onchange="document.getElementById('coderecepteur').style.display='none'">
+              <label>retrait</label>
+              <input type="radio" ngModel name="typeOp" value="vir" onchange="document.getElementById('coderecepteur').style.display='block'">
+              <label>virement</label>
+            </div>
+            <div class="form-group" id="coderecepteur" style="display: none;">
+              <label>code:</label>
+              <input class="form-control" ngModel name="codeCpv" placeholder="code du recepteur">
+            </div>
+            <div class="form-group">
+              <label>montant:</label>
+              <input class="form-control" type="number" ngModel name="montant" placeholder="montant">
+            </div>
+            <div class="text-danger"></div>
+            <button class="btn btn-primary" type="submit">save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container col-md-12" *ngIf="compte!=null && compte!=1">
+  <div class="row col-md-12 p-3">
+    <div class="col col-md-6">
+      <div class="card">
+        <div class="card-header bg-success">Information du compte</div>
+        <div class="card-body m-3">
+          <div>
+            <label>Code:</label>
+            <label>{{compte.codeCp}}</label>
+          </div>
+          <div>
+            <label>Client:</label>
+            <label>{{compte.user.username}}</label>
+          </div>
+          <div>
+            <label>Date creation:</label>
+            <label>{{compte.dateCreationCp}}</label>
+          </div>
+          <div>
+            <label>Solde:</label>
+            <label>{{compte.solde}}</label>
+          </div>
+          <div *ngIf="compte.taux!=null">
+            <label>Type Compte:</label>
+            <label>Compte Epargne</label>
+          </div>
+          <div *ngIf="compte.taux!=null">
+            <label>Taux:</label>
+            <label>{{compte.taux}}</label>
+          </div>
+          <div *ngIf="compte.decouvert!=null">
+            <label>Type Compte:</label>
+            <label>CompteCourent</label>
+          </div>
+          <div *ngIf="compte.decouvert!=null">
+            <label>Découverte:</label>
+            <label>{{compte.decouvert}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-md-6">
+      <div class="card">
+        <div class="card-header bg-success">Listes Opérations</div>
+        <div class="card-body m-3">
+          <table class="table table-dark table-striped">
+            <thead>
+            <tr>
+              <th>Num</th><th>Date</th><th>Montant</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let o of Entite">
+              <td>{{o.codeOp}}</td>
+              <td>{{o.dateCreationOp}}</td>
+              <td>{{o.montant}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="container">
+            <nav aria-label="...">
+              <ul class="pagination pagination-sm">
+                <li [ngClass]="i== currentpage? 'active': ''" *ngFor="let p of pages; let i=index" class="page-item">
+                  <a class="clickable page-link" (click)="ongetPage(i)">{{i}}</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,213 @@
+<div class="container col-md-12">
+  <div class="row col-md-12 p-3">
+    <div class="col col-md-4">
+      <div class="card">
+        <div class="card-header bg-success">
+          <h3><i class="fa fa-wrench"></i> Gestion de Compte</h3>
+        </div>
+        <div class="card-body m-3">
+          <ul class="list-group">
+          <li [ngClass]="bloc==0 ?'active':''" (click)="ongetUser()" class="clickable list-group-item">
+            <i class="fa fa-user">Profile</i>
+          </li>
+          <li class="clickable list-group-item" *ngIf="compteCourent==undefined" [ngClass]="bloc==1 ?'active':''" (click)="blocCompteCourent()">
+            <i class="fa fa-pencil" >Créer Compte Courent</i>
+          </li>
+          <li class="clickable list-group-item" *ngIf="compteEpargne==undefined" [ngClass]="bloc==2 ?'active':''" (click)="blocCompteEpargne()">
+            <i class="fa fa-pencil" >Créer Compte Epargne</i>
+          </li>
+          <li class="clickable list-group-item" [ngClass]="bloc==3 ?'active':''" *ngIf="compteEpargne!=undefined" (click)="pdfCompteEpargne()">
+            <i class="fa fa-print" >Imprimer Fiche compte Epargne</i>
+          </li>
+          <li class="clickable list-group-item" [ngClass]="bloc==7 ?'active':''" *ngIf="compteCourent!=undefined" (click)="pdfCompteCourent()">
+            <i class="fa fa-print" >Imprimer Fiche compte Courent</i>
+          </li>
+          <li class="clickable list-group-item" [ngClass]="bloc==4 ?'active':''" (click)="blocParamettre()">
+            <i class="fa fa-cog" >Paramettre</i>
+          </li>
+          <li class="clickable list-group-item" [ngClass]="bloc==5 ?'active':''" *ngIf="compteCourent!=undefined || compteEpargne!=undefined" (click)="blocCompte()">
+            <i class="fa fa-slideshare">Compte</i>
+          </li>
+          <li class="clickable list-group-item" [ngClass]="onpageo==2 ?'active':''" *ngIf="compteCourent!=undefined" (click)="listeoperationCompteC()">
+            <i class="fa fa-money">Operations sur le Compte Courent</i>
+          </li>
+          <li class="clickable list-group-item" [ngClass]="onpageo==1 ?'active':''" *ngIf="compteEpargne!=undefined" (click)="listeoperationCompteE()">
+            <i class="fa fa-money">Operations sur le Compte Epargne</i>
+          </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col col-md-8">
+      <div class="card">
+        <div class="card-header bg-success">
+          <h3 *ngIf="bloc==0"><i class="fa fa-user"></i>Profile</h3>
+          <h3 *ngIf="bloc==1"><i class="fa fa-pencil" ></i>Créer Compte Courent</h3>
+          <h3 *ngIf="bloc==2"><i class="fa fa-pencil" ></i>Créer Compte Epargne</h3>
+          <h3 *ngIf="bloc==3"><i class="fa fa-print" ></i>Imprimer compte</h3>
+          <h3 *ngIf="bloc==4"> <i class="fa fa-cog" ></i>Paramettre</h3>
+          <h3 *ngIf="bloc==5"><i class="fa fa-slideshare"></i>Compte</h3>
+          <h3 *ngIf="bloc==6"><i class="fa fa-money"></i>Operations</h3>
+        </div>
+        <div class="card-body">
+
+          <!-- form profile -->
+          <div class="padding-bottom-3x mb-2 mt-5" *ngIf="bloc==0">
+            <div class="form-group">
+              <div class="col-md-12">
+                <img class="marg col-sm-offset-2"src="{{clientsevise.host+'/userImage/'+userId+ '?ts=' + getTS()}}" width="300">
+              </div>
+              <p>
+                <input type="file" (change)="onSelectedFile($event)"  class="form-control">
+              </p>
+            </div>
+            <form #f="ngForm" (ngSubmit)="onupdateclient(f.value)">
+              <div class="form-group">
+                <label for="name">Nom:</label>
+                <input type="text" class="form-control" value="{{currentUser.username}}" ngModel [(ngModel)]="currentUser.username" id="name" placeholder="Enter name" name="username">
+              </div>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" value="{{currentUser.email}}" ngModel [(ngModel)]="currentUser.email" id="email" placeholder="Enter email" name="email">
+              </div>
+              <div class="form-group">
+                <label for="photo">Nom photo:</label>
+                <label>{{currentUser.photo}}</label>
+                <input hidden type="email" class="form-control" value="{{currentUser.photo}}" ngModel [(ngModel)]="currentUser.photo" id="photo" placeholder="Enter email" name="photo">
+              </div>
+              <input hidden  type="password" ngModel class="form-control" value="{{currentUser.password}}" [(ngModel)]="currentUser.password" placeholder="Enter password" name="password">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          <!-- form profile-->
+
+          <!--- form parameter -->
+          <div class="padding-bottom-3x mb-2 mt-5" *ngIf="bloc==4">
+            <div class="alert alert-success" *ngIf="mode==0">
+              <strong>Mot de passe modifié avec succè</strong>
+            </div>
+            <div class="alert alert-danger" *ngIf="mode==1">
+              <strong>{{messageError}}</strong>
+            </div>
+            <form #f="ngForm" (ngSubmit)="updatePassword(f.value)">
+              <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" ngModel class="form-control"  id="password" placeholder="Enter password" name="password" required>
+              </div>
+              <div class="form-group">
+                <label for="newpassword">New Password:</label>
+                <input type="password" ngModel class="form-control"  id="newpassword" placeholder="Enter new password" name="newpassword" required>
+              </div>
+              <div class="form-group">
+                <label for="confirmpas">Confirm Password:</label>
+                <input type="password" ngModel class="form-control"  id="confirmpas" placeholder="Confirm password" name="confirmpassword" required>
+              </div>
+              <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Submit</button>
+            </form>
+          </div>
+          <!-- form parameter -->
+
+          <!-- table compte client -->
+          <div class="padding-bottom-3x mb-2 mt-5" *ngIf="bloc==5">
+            <table class="table table-dark table-striped">
+              <thead>
+              <tr>
+                <th>Code</th><th>Type</th><th>Date</th><th>Montant</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngIf="compteEpargne!=undefined">
+                <td>{{compteEpargne[0].codeCp}}</td>
+                <td>Compte Epargne</td>
+                <td>{{compteEpargne[0].dateCreationCp}}</td>
+                <td>{{compteEpargne[0].solde}}</td>
+              </tr>
+              <tr *ngIf="compteCourent!=undefined">
+                <td>{{compteCourent[0].codeCp}}</td>
+                <td>Compte Courent</td>
+                <td>{{compteCourent[0].dateCreationCp}}</td>
+                <td>{{compteCourent[0].solde}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- table compte client-->
+
+          <!-- operation -->
+          <div class="padding-bottom-3x mb-2 mt-5 " *ngIf="bloc==6">
+            <table class="table table-dark table-striped">
+              <thead>
+              <tr>
+                <th>ID</th><th>Date</th><th>Montant</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let o of Entite">
+                <td>{{o.codeOp}}</td>
+                <td>{{o.dateCreationOp}}</td>
+                <td>{{o.montant}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="container">
+              <nav aria-label="...">
+                <ul class="pagination pagination-sm">
+                  <li [ngClass]="i== currentpage? 'active': ''" *ngFor="let p of pages; let i=index" class="page-item">
+                    <a class="clickable page-link" (click)="ongetPage(i)">{{i}}</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <!-- operation -->
+
+          <!-- cree compte courent-->
+          <div class="padding-bottom-3x mb-2 mt-5" *ngIf="bloc==1">
+            <div class="alert alert-success" *ngIf="mode==0">
+              <strong>Votre Compte courent a été créé</strong>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-lg-10 col-md-10">
+                <div class="forgot">
+                  <h2>Créez votre compte Courent</h2>
+                  <p>Entrez la somme que vous souhaitez placer sur votre compte</p>
+                </div>
+                <form class="card mt-4" #f="ngForm" (ngSubmit)="addCompteCourantTouser(f.value)">
+                  <div class="card-body">
+                    <div class="form-group"> <label for="soldeC">Entrez cette somme</label> <input class="form-control" ngModel value="{{soldec}}" type="number" name="solde" id="soldeC" required><small class="form-text text-muted">Cette somme sera enregistrée dans votre compte</small> </div>
+                  </div>
+                  <div class="card-footer"> <button class="btn btn-success" [disabled]="mode==0" type="submit">Enregistrer</button> </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- cree compte courent-->
+
+          <!-- creer compte epargne-->
+          <div class="padding-bottom-3x mb-2 mt-5" *ngIf="bloc==2">
+            <div class="alert alert-success" *ngIf="mode==0">
+              <strong>Votre Compte Epargne a été créé</strong>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-lg-10 col-md-10">
+                <div class="forgot">
+                  <h2>Créez votre compte Epargne</h2>
+                  <p>Entrez la somme que vous souhaitez placer sur votre compte</p>
+                </div>
+                <form class="card mt-4" #f="ngForm" (ngSubmit)="addCompteEpargneTouser(f.value)">
+                  <div class="card-body">
+                    <div class="form-group"> <label for="soldee">Entrez cette somme</label> <input class="form-control" ngModel value="{{soldee}}" name="solde" type="number" id="soldee" required><small class="form-text text-muted">Cette somme sera enregistrée dans votre compte</small> </div>
+                  </div>
+                  <div class="card-footer"> <button class="btn btn-success" [disabled]="mode==0" type="submit">Enregistrer</button> </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- creer compte epargne-->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
