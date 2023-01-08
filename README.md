@@ -55,5 +55,18 @@ le client peut gérer son profile en effectuant toute les modifications qu'il ve
 
 ![impression_fiche-compte](https://user-images.githubusercontent.com/72146213/211162402-d6d29789-189d-43cb-9bf5-adbcde2b48b3.PNG)
 
+## Présentation de la fiche du compte courent en format PDF:
+
+![Fiche_compte](https://user-images.githubusercontent.com/72146213/211162438-37804c77-cb32-48ce-91b7-c908e0284bb2.PNG)
+
+## Tableau de bor pour effectuer les  opérations sur les comptes:
+
+![Opération_versement_succes](https://user-images.githubusercontent.com/72146213/211162495-a1878ca0-cdde-496e-861d-3dade6fe3a15.PNG)
+
+## Tableau de bor d'administration de l'application:
+
+![Tablaeu_bor_admin](https://user-images.githubusercontent.com/72146213/211162528-2f88c7ad-3dda-42b3-b044-82ba68b1fab3.PNG)
+
+
 
 
